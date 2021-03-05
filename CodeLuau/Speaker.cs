@@ -9,7 +9,10 @@ namespace CodeLuau
 	/// </summary>
 	public class Speaker
 	{
-		public string FirstName { get; set; }
+        /* TODO: Extract RegisterValidator.cs
+        Eliminate hard coded arrays using a db.*/
+
+        public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
 		public int? yearsOfExperience { get; set; }

@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using NUnit.Framework;
 
 namespace CodeLuau.Tests
 {
@@ -15,7 +15,7 @@ namespace CodeLuau.Tests
 			{
 				return ex;
 			}
-
+			
 			Assert.Fail("Expected exception of type {0}.", typeof(T));
 
 			return null;

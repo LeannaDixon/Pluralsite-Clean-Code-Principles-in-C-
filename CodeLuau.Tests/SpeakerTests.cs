@@ -1,15 +1,16 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System;
+using NUnit.Framework;
+using FluentAssertions;
 
 namespace CodeLuau.Tests
 {
-	[TestClass]
+	[TestFixture]
 	public class SpeakerTests
 	{
 		private FakeRepository repository = new FakeRepository();
 
-		[TestMethod]
+		[Test]
 		public void Register_EmptyFirstName_ReturnsFirstNameRequired()
 		{
 			//arrange
@@ -23,7 +24,7 @@ namespace CodeLuau.Tests
 			Assert.AreEqual(RegisterError.FirstNameRequired, result.Error);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_EmptyLastName_ReturnsLastNameRequired()
 		{
 			//arrange
@@ -34,10 +35,11 @@ namespace CodeLuau.Tests
 			var result = speaker.Register(repository);
 
 			//assert
-			Assert.AreEqual(RegisterError.LastNameRequired, result.Error);
+			result.Error.Should().Be(RegisterError.LastNameRequired);
+			//Assert.AreEqual(RegisterError.LastNameRequired, result.Error);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_EmptyEmail_ReturnsEmailRequired()
 		{
 			//arrange
@@ -51,7 +53,7 @@ namespace CodeLuau.Tests
 			Assert.AreEqual(RegisterError.EmailRequired, result.Error);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_WorksForPrestigiousEmployerButHasRedFlags_ReturnsSpeakerId()
 		{
 			//arrange
@@ -65,7 +67,7 @@ namespace CodeLuau.Tests
 			Assert.IsNotNull(result.SpeakerId);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_HasBlogButHasRedFlags_ReturnsSpeakerId()
 		{
 			//arrange
@@ -78,7 +80,7 @@ namespace CodeLuau.Tests
 			Assert.IsNotNull(result.SpeakerId);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_HasCertificationsButHasRedFlags_ReturnsSpeakerId()
 		{
 			//arrange
@@ -98,7 +100,7 @@ namespace CodeLuau.Tests
 			Assert.IsNotNull(result.SpeakerId);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_SingleSessionThatsOnOldTech_ReturnsNoSessionsApproved()
 		{
 			//arrange
@@ -114,7 +116,7 @@ namespace CodeLuau.Tests
 			Assert.AreEqual(RegisterError.NoSessionsApproved, result.Error);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_NoSessionsPassed_ReturnsNoSessionsProvidedError()
 		{
 			//arrange
@@ -128,7 +130,7 @@ namespace CodeLuau.Tests
 			Assert.AreEqual(RegisterError.NoSessionsProvided, result.Error);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_DoesntAppearExceptionalAndUsingOldBrowser_ReturnsSpeakerDoesNotMeetStandards()
 		{
 			//arrange
@@ -143,7 +145,7 @@ namespace CodeLuau.Tests
 			Assert.AreEqual(RegisterError.SpeakerDoesNotMeetStandards, result.Error);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Register_DoesntAppearExceptionalAndHasAncientEmail_ReturnsSpeakerDoesNotMeetStandards()
 		{
 			//arrange

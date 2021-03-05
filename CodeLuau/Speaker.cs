@@ -38,28 +38,8 @@ namespace CodeLuau
             {
                 return new RegisterResponse(RegisterError.SpeakerDoesNotMeetStandards);
             }
-            bool approved = false;
-
-            foreach (var session in Sessions)
-            {
-                var ot = new List<string>() { "Cobol", "Punch Cards", "Commodore", "VBScript" };
-
-                foreach (var tech in ot)
-                {
-                    if (session.Title.Contains(tech) || session.Description.Contains(tech))
-                    {
-                        session.Approved = false;
-                        break;
-                    }
-                    else
-                    {
-                        session.Approved = true;
-                        approved = true;
-                    }
-                }
-            }
-
-            if (approved)
+            bool atLeastOneSessionIsApproved = ApproveSessions();
+            if (atLeastOneSessionIsApproved)
             {
                 //if we got this far, the speaker is approved
                 //let's go ahead and register him/her now.
@@ -103,6 +83,28 @@ namespace CodeLuau
             }
             //if we got this far, the speaker is registered.
             return new RegisterResponse((int)speakerId);
+        }
+
+        private bool ApproveSessions()
+        {
+            foreach (var session in Sessions)
+            {
+                session.Approved = !SessionIsAboutOldTechnologies(session);
+            }
+            return Sessions.Any(s=> s.Approved);
+        }
+
+        private bool SessionIsAboutOldTechnologies(Session session)
+        {
+            var oldTechnologies = new List<string>() { "Cobol", "Punch Cards", "Commodore", "VBScript" };
+            foreach (var tech in oldTechnologies)
+            {
+                if (session.Title.Contains(tech) || session.Description.Contains(tech))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool HasObviousRedFlags()
